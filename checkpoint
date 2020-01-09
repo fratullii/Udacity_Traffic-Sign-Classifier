@@ -1,2 +1,3 @@
-model_checkpoint_path: "lenet"
+model_checkpoint_path: "lenet_norm"
 all_model_checkpoint_paths: "lenet"
+all_model_checkpoint_paths: "lenet_norm"
