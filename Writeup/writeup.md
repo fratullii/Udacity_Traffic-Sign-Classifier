@@ -134,8 +134,55 @@ Changes in the activation functions and in the optimizer were not explored. Exte
 
 ### Analyze Performance
 
-The model fails at correctly classifying any of the image, actually struggling to report any label with certainty (all the top-1 probabilities are well far from 100%). This confirms the remarks previously made.
+The model classifies correctly only one image, resulting thus in an accuracy of **20%**. It always classify the images as Speed Limit of 60 Km/h:
+
+| Image                | Prediction          |
+| -------------------- | ------------------- |
+| Keep Right           | Speed Limit 60 Km/h |
+| Speed Limit 50 km/h  | Speed Limit 60 Km/h |
+| Go straight or right | Speed Limit 60 Km/h |
+| Speed Limit 60 Km/h  | Speed Limit 60 Km/h |
+| Yield                | Speed Limit 60 Km/h |
 
 ### Output Top 5 Softmax Probabilities For Each Image Found on the Web
 
-Even considering the top-5 probabilities, the model performs very poorly in classifying the images. Only in 2 cases the correct label appear in the top5 predictions, with a very low score. Such low probabilites signify that the model is not practically misclassifying but it is very uncertain and unable to give a prediction whatsoever. Several images such as the ones found on the web need to be inserted in the training dataset in order to classify this other kind of images.
+```
+Image 1: Keep right
+1. 30.45% Speed limit (60km/h)
+2. 14.44% Turn right ahead
+3. 10.14% Speed limit (80km/h)
+4. 7.65% Yield
+5. 5.59% No passing
+
+Image 2: Speed limit (50km/h)
+1. 39.94% Speed limit (60km/h)
+2. 11.23% Speed limit (80km/h)
+3. 9.92% Turn right ahead
+4. 7.06% Yield
+5. 5.49% No passing
+
+Image 3: Go straight or right
+1. 38.37% Speed limit (60km/h)
+2. 8.50% Speed limit (80km/h)
+3. 7.85% No passing
+4. 6.65% Turn right ahead
+5. 6.16% No entry
+
+Image 4: Speed limit (60km/h)
+1. 27.17% Speed limit (60km/h)
+2. 14.58% Speed limit (80km/h)
+3. 13.22% Turn right ahead
+4. 8.10% Yield
+5. 4.62% Speed limit (70km/h)
+
+Image 5: Yield
+1. 29.27% Speed limit (60km/h)
+2. 13.88% Turn right ahead
+3. 10.64% Speed limit (80km/h)
+4. 8.17% No entry
+5. 7.82% Yield
+```
+
+Even considering the top-5 probabilities, the model struggles to classify the images, showing a preference of classifying all the images in this dataset with the label "Speed Limit 60 km/h". Considering the top5-accuracy, the model passes from the top-1 20% to 40%. Moreover, the model result quite uncertain, since not even one of the top-1 probabilities scores above 40%.
+
+The most probable reason of this decrease of performance is the fact that the images do not come from the same dataset, but they have an embedded difference (e.g. size, color...). These differences may not be grasped by the human eye, but it is absolutely critical to the neural network. The only way to significantly improve the accuracy would be introduce some of the images in the training dataset, or alternatively to find images and process them in such a way they look more similar to the one contained in the training dataset.
