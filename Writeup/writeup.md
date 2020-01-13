@@ -72,23 +72,63 @@ The LeNet-5 architecture has been firstly implemented for non-color images, so i
 ### Model Architecture
 
 The architecture is the classic LeNet-5 architecture, with 2 convolutional + max_pooling layers, and 2 fully connected layers for classification. Only two modification have been added:
-- The depth of the convolutional layers has been doubled to 12 and 32
-- Dropout with 25% rate has been added after the second convolutional layer
+- The depth of the two convolutional layers has been doubled to 12 and 32
+- Dropout with 25% rate has been added after the second convolutional layer.
+
+Here the table describing the complete architecture layer by layer:
+
+| Layer           | Details                                           |
+| --------------- | ------------------------------------------------- |
+| Input           | 32x32x1 Y channel of a YUV Image                  |
+| Convolution 5x5 | 1x1 strides, same padding, outputs 28x28x12       |
+| ReLU            | -                                                 |
+| Max Pooling 2x2 | 2x2 strides, outputs 14x14x12                     |
+| Convolution 5x5 | 1x1 strides, same padding, outputs 10x10x32 image |
+| ReLU            | -                                                 |
+| Dropout         | keep probability 75%                              |
+| Max Pooling 2x2 | 2x2 strides, outputs 5x5x32                       |
+| Flatten output  | Outputs 800x1                                     |
+| Fully connected | 120 neurons                                       |
+| ReLU            | -                                                 |
+| Fully connected | 84 neurons                                        |
+| ReLu            | -                                                 |
+| Fully Connected | 43 neurons                                        |
+| Softmax         | -                                                 |
+
+
 
 ### Train, Validate and Test the Model
 
 After several attempts, the following hyperparameters have been set:
-- Number of epochs: 
+- Number of epochs: 25
 - Batch size: 128
 - Learning rate: 0.0009
+- Optimizer: Adam
 
-The validation accuracy reached is **94.4%**, whereas the test accuracy is **92.0%**
+First of all, I run the vanilla LeNet-5 architecture, which performed over 90% validation set. Then I decided, instead of using cross-validation which is very computationally and time expensive, to follow a trial and error approach to seek the best hyperparameters, as well as change in the architecture. 
+
+**Batch size**: The size of 128 appeared to be optimal, so it was left unchanged.
+
+**Learning rate**: Depending on the architecture, diminishing the learning rate in the neighborhood of resulted showed to slightly improve accuracy, but only down to values of 0.0005-0.0006. For the final model architecture, this effect was not so important, so it was just decreased from the initial 0.001 to 0.0009.
+
+**Dropout**: Dropout resulted useful only in small quantity. For example, adding dropout to any of the fully connected layers worsened the accuracy. This is probably due to the size of the architecture, which may not be able to achieve a good performance by shutting down weights. Since it was anyway able to improve the accuracy in small amount, it was added after the second convolutional layer, alongside doubling the size of convolutional filters, in order to achieve a right compromise between model complexity and regularization.
+
+**Epochs**: When dropout is added, the number of epochs needed to train the model increase proportionally. So the number of epochs was increased to 25. For more aggressive dropout, even more epochs were needed.
+
+Changes in the activation functions and in the optimizer were not explored. Extensive research has showed how the ReLU function and the Adam optimizer are the best possible solution for image classification tasks.
+
+### Final results
+
+- Train accuracy: **98.7 %**
+- Validation accuracy: **94.4%**
+
+- Test accuracy: **92.0%**
 
 ## Step 3: Test a Model on New Images
 
 ### Acquiring new images
 
-5 new images of German Traffic Sign have been found on the web. Since they appear in greater picture they have been cropped, resized to 32x32 and converted to .png format prior to upload. Despite being apparently easy for our model, they are a bit different from the images in the test set, especially in size. It is expected that the model will not perform well because it was trained on a dataset with particular and recurrent characteristics, not present in these 5 new images.
+5 new images of German Traffic Sign have been found on the web. Since they appear in greater pictures, they have been cropped, resized to 32x32 and converted to .png format prior to upload. Despite being apparently easy for our model, they are a bit different from the images in the test set, especially in size. It is expected that the model will not perform well because it was trained on a dataset with particular and recurrent characteristics, not present in these 5 new images.
 
 ![png](output_56_0.png)
 
