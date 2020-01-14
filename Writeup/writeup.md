@@ -134,7 +134,7 @@ Changes in the activation functions and in the optimizer were not explored. Exte
 
 ### Analyze Performance
 
-The model classifies correctly only one image, resulting thus in an accuracy of **20%**. It always classify the images as Speed Limit of 60 Km/h:
+The model classifies correctly only one image, resulting thus in an accuracy of **20%**. It always classifies the images as Speed Limit of 60 Km/h:
 
 | Image                | Prediction          |
 | -------------------- | ------------------- |
